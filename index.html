@@ -1,0 +1,155 @@
+!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homenagem Especial</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            background-color: #f9f0ff;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            z-index: 10;
+        }
+        
+        h1 {
+            color: #d23669;
+            margin-bottom: 20px;
+        }
+        
+        p {
+            color: #333;
+            font-size: 18px;
+            line-height: 1.6;
+        }
+        
+        .btn {
+            background-color: #ff6b81;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 18px;
+            border-radius: 50px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn:hover {
+            background-color: #ff4757;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .heart, .star {
+            position: absolute;
+            pointer-events: none;
+            animation: fall linear forwards;
+            z-index: 1;
+        }
+        
+        @keyframes fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Homenagem Especial</h1>
+        <p>Esta página é dedicada a alguém muito especial em minha vida. Clique no botão abaixo para liberar uma chuva de amor e apreciação!</p>
+        <button class="btn" id="magicBtn">Liberar Chuva de Amor</button>
+    </div>
+
+    <script>
+        document.getElementById('magicBtn').addEventListener('click', function() {
+            // Criar chuva de corações e estrelas
+            createRain();
+            
+            // Mudar o texto do botão
+            this.textContent = 'Chuva de Amor!';
+            this.style.backgroundColor = '#d23669';
+            
+            // Desativar o botão após o clique
+            this.disabled = true;
+        });
+        
+        function createRain() {
+            // Intervalo para criar novos elementos
+            const interval = setInterval(() => {
+                // Criar coração ou estrela aleatoriamente
+                if (Math.random() > 0.5) {
+                    createHeart();
+                } else {
+                    createStar();
+                }
+            }, 100);
+            
+            // Parar após 30 segundos (opcional)
+            setTimeout(() => {
+                clearInterval(interval);
+            }, 30000);
+        }
+        
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.innerHTML = '❤️';
+            heart.classList.add('heart');
+            
+            // Estilo do coração
+            const size = Math.random() * 30 + 15;
+            heart.style.fontSize = ${size}px;
+            heart.style.left = Math.random() * window.innerWidth + 'px';
+            heart.style.top = '-50px';
+            heart.style.animationDuration = Math.random() * 3 + 2 + 's';
+            
+            document.body.appendChild(heart);
+            
+            // Remover após a animação
+            setTimeout(() => {
+                heart.remove();
+            }, 5000);
+        }
+        
+        function createStar() {
+            const star = document.createElement('div');
+            star.innerHTML = '⭐';
+            star.classList.add('star');
+            
+            // Estilo da estrela
+            const size = Math.random() * 30 + 15;
+            star.style.fontSize = ${size}px;
+            star.style.left = Math.random() * window.innerWidth + 'px';
+            star.style.top = '-50px';
+            star.style.animationDuration = Math.random() * 3 + 2 + 's';
+            star.style.transform = rotate(${Math.random() * 360}deg);
+            
+            document.body.appendChild(star);
+            
+            // Remover após a animação
+            setTimeout(() => {
+                star.remove();
+            }, 5000);
+        }
+    </script>
+</body>
+</html>
