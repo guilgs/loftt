@@ -3,13 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <title>Meu mundo é você</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     html, body {
       margin: 0;
       padding: 0;
       height: 100%;
       font-family: 'Segoe UI', Arial, sans-serif;
-      background: #e3f2fd; /* azul claro */
+      background: #e3f2fd;
       overflow-x: hidden;
     }
     .carousel-container {
@@ -40,52 +41,63 @@
     }
     #showBtn {
       position: absolute;
-      top: 50%;
+      top: 60%;
       left: 50%;
       transform: translate(-50%, -50%);
       z-index: 2;
-      padding: 18px 40px;
-      font-size: 1.5em;
-      background: #2196f3; /* azul principal */
+      padding: 22px 0;
+      width: 80vw;
+      max-width: 350px;
+      font-size: 2em;
+      background: #2196f3;
       color: #fff;
       border: none;
-      border-radius: 30px;
+      border-radius: 40px;
       cursor: pointer;
-      box-shadow: 0 2px 8px #2196f380;
-      transition: background 0.2s;
+      box-shadow: 0 2px 12px #2196f380;
+      transition: background 0.2s, box-shadow 0.2s;
+      font-weight: bold;
+      letter-spacing: 1px;
     }
-    #showBtn:hover {
-      background: #1565c0; /* azul escuro */
+    #showBtn:hover, #showBtn:focus {
+      background: #1565c0;
+      box-shadow: 0 4px 20px #1565c080;
+      outline: none;
     }
     .section {
-      margin-top: 50px;
-      margin-bottom: 50px;
-      max-width: 700px;
-      margin-left: auto;
-      margin-right: auto;
+      margin: 0 auto 32px auto;
+      max-width: 900px;
       background: #fff;
       border-radius: 16px;
       box-shadow: 0 2px 12px #2196f380;
-      padding: 32px;
+      padding: 48px 24px;
       text-align: center;
-      font-size: 1.3em;
+      font-size: 1.4em;
       position: relative;
       z-index: 2;
+      min-height: 40vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
     .section-final {
-      max-width: 700px;
+      max-width: 900px;
       margin: 0 auto;
-      background: rgba(255,255,255,0.2);
+      background: rgba(255,255,255,0.3);
       border-radius: 16px;
       box-shadow: 0 2px 12px #2196f380;
-      padding: 32px;
+      padding: 48px 24px;
       text-align: center;
-      font-size: 1.3em;
+      font-size: 1.5em;
       position: relative;
       z-index: 2;
+      min-height: 30vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
     .parallax-img {
-      min-height: 400px;
+      min-height: 40vh;
       width: 100vw;
       background-attachment: fixed;
       background-position: center;
@@ -126,6 +138,37 @@
       }
     }
     audio { display: none; }
+
+    /* Responsividade */
+    @media (max-width: 900px) {
+      .section, .section-final {
+        max-width: 98vw;
+        padding: 32px 8px;
+        font-size: 1.1em;
+        min-height: 30vh;
+      }
+      .parallax-img {
+        min-height: 30vh;
+      }
+    }
+    @media (max-width: 600px) {
+      .section, .section-final {
+        max-width: 100vw;
+        padding: 18vw 2vw;
+        font-size: 1em;
+        min-height: 40vw;
+      }
+      .parallax-img {
+        min-height: 40vw;
+      }
+      #showBtn {
+        font-size: 1.2em;
+        padding: 16px 0;
+        width: 90vw;
+        max-width: 98vw;
+        border-radius: 30px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -202,10 +245,10 @@
       btn.style.display = 'none';
       document.querySelector('.carousel-container').style.display = 'none';
       content.style.display = 'block';
-      audio.volume = 0; // começa baixo]
+      audio.volume = 0;
       audio.currentTime = 9;
       audio.play();
-      fadeInAudio(audio, 1, 10000); // volume final 1, duração 5s
+      fadeInAudio(audio, 1, 10000);
       startHearts();
       content.scrollIntoView({ behavior: 'smooth' });
     };
@@ -226,7 +269,7 @@
       setTimeout(() => {
         running = false;
         clearInterval(interval);
-      }, 60000); // 1 minuto
+      }, 60000);
     }
     function fadeInAudio(audio, targetVolume, duration) {
       const step = 0.05;
