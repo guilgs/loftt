@@ -65,7 +65,7 @@
       outline: none;
     }
     .section {
-      margin: 0 auto 32px auto;
+      margin: 0 auto 0 auto;
       max-width: 900px;
       background: #fff;
       border-radius: 16px;
@@ -97,7 +97,7 @@
       justify-content: center;
     }
     .parallax-img {
-      min-height: 50vh;
+      min-height: 80vh;
       width: 100vw;
       background-attachment: fixed;
       background-position: center;
@@ -148,18 +148,18 @@
         min-height: 30vh;
       }
       .parallax-img {
-        min-height: 50vh;
+        min-height: 70vh;
       }
     }
     @media (max-width: 600px) {
-      .section, .section-final {
+      .section{
         max-width: 100vw;
         padding: 18vw 2vw;
         font-size: 1em;
         min-height: 40vw;
       }
       .parallax-img {
-        min-height: 60vw;
+        min-height: 90vw;
       }
       #showBtn {
         font-size: 1.2em;
@@ -195,7 +195,7 @@
     <button id="showBtn">Walleska</button>
   </div>
   <div id="content" style="display:none;">
-    <div class="parallax-img" style="background-image: url('1.png');"></div>
+    <div class="parallax-img" style="background-image: url('1.png');min-height:100vw"></div>
     <div class="section">
       <h2>Meu amor,</h2>
       <p>
@@ -220,7 +220,7 @@
         Eu te amo e com você tudo faz sentido
       </h2>
     </div>
-    <div class="parallax-img" style="background-image: url('casacomigo.jpg');padding-top:100px;padding-bottom:50px">
+    <div class="parallax-img" style="background-image: url('casacomigo.jpg');padding-top:100px;padding-bottom:50px;min-height:100vw">
       <div class="section-final">
         <h2>Quer casar comigo?</h2>
       </div>
