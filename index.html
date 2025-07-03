@@ -1,155 +1,208 @@
-!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Homenagem Especial</title>
+    <title>Homenagem com Carrossel</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
-            text-align: center;
             background-color: #f9f0ff;
             margin: 0;
-            padding: 0;
-            overflow: hidden;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+            padding: 20px;
+            text-align: center;
         }
         
-        .container {
-            background-color: rgba(255, 255, 255, 0.8);
-            padding: 30px;
+        .carrossel-container {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            overflow: hidden;
             border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            max-width: 600px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+        
+        .carrossel {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+            height: 500px;
+        }
+        
+        .carrossel img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+        
+        .carrossel-controle {
+            position: absolute;
+            top: 50%;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            transform: translateY(-50%);
+        }
+        
+        .carrossel-btn {
+            background: rgba(255,255,255,0.5);
+            border: none;
+            padding: 15px;
+            cursor: pointer;
+            font-size: 24px;
+            color: #d23669;
             z-index: 10;
+        }
+        
+        .indicadores {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        
+        .indicador {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #ccc;
+            margin: 0 5px;
+            cursor: pointer;
+        }
+        
+        .indicador.ativo {
+            background: #d23669;
         }
         
         h1 {
             color: #d23669;
-            margin-bottom: 20px;
-        }
-        
-        p {
-            color: #333;
-            font-size: 18px;
-            line-height: 1.6;
-        }
-        
-        .btn {
-            background-color: #ff6b81;
-            color: white;
-            border: none;
-            padding: 12px 25px;
-            font-size: 18px;
-            border-radius: 50px;
-            cursor: pointer;
-            margin-top: 20px;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-        
-        .btn:hover {
-            background-color: #ff4757;
-            transform: translateY(-3px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-        }
-        
-        .heart, .star {
-            position: absolute;
-            pointer-events: none;
-            animation: fall linear forwards;
-            z-index: 1;
-        }
-        
-        @keyframes fall {
-            to {
-                transform: translateY(100vh) rotate(360deg);
-                opacity: 0;
-            }
+            margin-bottom: 30px;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Homenagem Especial</h1>
-        <p>Esta página é dedicada a alguém muito especial em minha vida. Clique no botão abaixo para liberar uma chuva de amor e apreciação!</p>
-        <button class="btn" id="magicBtn">Liberar Chuva de Amor</button>
+    <h1>Homenagem em Fotos</h1>
+    
+    <div class="carrossel-container">
+        <div class="carrossel">
+            <!-- Adicione suas imagens aqui -->
+            <img src="foto1.jpg" alt="Foto 1">
+            <img src="foto2.jpg" alt="Foto 2">
+            <img src="foto3.jpg" alt="Foto 3">
+            <img src="foto4.jpg" alt="Foto 4">
+        </div>
+        
+        <div class="carrossel-controle">
+            <button class="carrossel-btn prev">❮</button>
+            <button class="carrossel-btn next">❯</button>
+        </div>
     </div>
+    
+    <div class="indicadores"></div>
 
     <script>
-        document.getElementById('magicBtn').addEventListener('click', function() {
-            // Criar chuva de corações e estrelas
-            createRain();
+        document.addEventListener('DOMContentLoaded', function() {
+            const carrossel = document.querySelector('.carrossel');
+            const imagens = document.querySelectorAll('.carrossel img');
+            const btnPrev = document.querySelector('.prev');
+            const btnNext = document.querySelector('.next');
+            const indicadoresContainer = document.querySelector('.indicadores');
             
-            // Mudar o texto do botão
-            this.textContent = 'Chuva de Amor!';
-            this.style.backgroundColor = '#d23669';
+            let indiceAtual = 0;
+            const totalImagens = imagens.length;
+            let intervaloCarrossel;
             
-            // Desativar o botão após o clique
-            this.disabled = true;
-        });
-        
-        function createRain() {
-            // Intervalo para criar novos elementos
-            const interval = setInterval(() => {
-                // Criar coração ou estrela aleatoriamente
-                if (Math.random() > 0.5) {
-                    createHeart();
-                } else {
-                    createStar();
+            // Criar indicadores
+            imagens.forEach((_, index) => {
+                const indicador = document.createElement('div');
+                indicador.classList.add('indicador');
+                if (index === 0) indicador.classList.add('ativo');
+                indicador.addEventListener('click', () => irParaImagem(index));
+                indicadoresContainer.appendChild(indicador);
+            });
+            
+            // Clonar primeira e última imagem para efeito infinito
+            const primeiraImg = imagens[0].cloneNode(true);
+            const ultimaImg = imagens[imagens.length - 1].cloneNode(true);
+            carrossel.insertBefore(ultimaImg, imagens[0]);
+            carrossel.appendChild(primeiraImg);
+            
+            // Ajustar posição inicial
+            carrossel.style.transform = `translateX(-${100}%)`;
+            
+            // Navegação
+            function irParaImagem(index) {
+                indiceAtual = index;
+                atualizarCarrossel();
+                resetarIntervalo();
+            }
+            
+            function proximaImagem() {
+                indiceAtual = (indiceAtual + 1) % totalImagens;
+                atualizarCarrossel();
+            }
+            
+            function imagemAnterior() {
+                indiceAtual = (indiceAtual - 1 + totalImagens) % totalImagens;
+                atualizarCarrossel();
+            }
+            
+            function atualizarCarrossel() {
+                carrossel.style.transition = 'transform 0.5s ease-in-out';
+                carrossel.style.transform = `translateX(-${(indiceAtual + 1) * 100}%)`;
+                
+                // Atualizar indicadores
+                document.querySelectorAll('.indicador').forEach((ind, index) => {
+                    ind.classList.toggle('ativo', index === indiceAtual);
+                });
+            }
+            
+            // Event listeners
+            btnNext.addEventListener('click', () => {
+                proximaImagem();
+                resetarIntervalo();
+            });
+            
+            btnPrev.addEventListener('click', () => {
+                imagemAnterior();
+                resetarIntervalo();
+            });
+            
+            // Transição infinita
+            carrossel.addEventListener('transitionend', () => {
+                if (imagens[indiceAtual].id === 'ultima-clone') {
+                    carrossel.style.transition = 'none';
+                    indiceAtual = totalImagens - 1;
+                    carrossel.style.transform = `translateX(-${(indiceAtual + 1) * 100}%)`;
                 }
-            }, 100);
+                
+                if (imagens[indiceAtual].id === 'primeira-clone') {
+                    carrossel.style.transition = 'none';
+                    indiceAtual = 0;
+                    carrossel.style.transform = `translateX(-${(indiceAtual + 1) * 100}%)`;
+                }
+            });
             
-            // Parar após 30 segundos (opcional)
-            setTimeout(() => {
-                clearInterval(interval);
-            }, 30000);
-        }
-        
-        function createHeart() {
-            const heart = document.createElement('div');
-            heart.innerHTML = '❤️';
-            heart.classList.add('heart');
+            // Auto-play
+            function iniciarCarrosselAutomatico() {
+                intervaloCarrossel = setInterval(proximaImagem, 3000);
+            }
             
-            // Estilo do coração
-            const size = Math.random() * 30 + 15;
-            heart.style.fontSize = ${size}px;
-            heart.style.left = Math.random() * window.innerWidth + 'px';
-            heart.style.top = '-50px';
-            heart.style.animationDuration = Math.random() * 3 + 2 + 's';
+            function resetarIntervalo() {
+                clearInterval(intervaloCarrossel);
+                iniciarCarrosselAutomatico();
+            }
             
-            document.body.appendChild(heart);
+            iniciarCarrosselAutomatico();
             
-            // Remover após a animação
-            setTimeout(() => {
-                heart.remove();
-            }, 5000);
-        }
-        
-        function createStar() {
-            const star = document.createElement('div');
-            star.innerHTML = '⭐';
-            star.classList.add('star');
+            // Pausar ao passar o mouse
+            carrosselContainer.addEventListener('mouseenter', () => {
+                clearInterval(intervaloCarrossel);
+            });
             
-            // Estilo da estrela
-            const size = Math.random() * 30 + 15;
-            star.style.fontSize = ${size}px;
-            star.style.left = Math.random() * window.innerWidth + 'px';
-            star.style.top = '-50px';
-            star.style.animationDuration = Math.random() * 3 + 2 + 's';
-            star.style.transform = rotate(${Math.random() * 360}deg);
-            
-            document.body.appendChild(star);
-            
-            // Remover após a animação
-            setTimeout(() => {
-                star.remove();
-            }, 5000);
-        }
+            carrosselContainer.addEventListener('mouseleave', () => {
+                iniciarCarrosselAutomatico();
+            });
+        });
     </script>
 </body>
 </html>
