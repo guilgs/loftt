@@ -1,208 +1,243 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Homenagem com Carrossel</title>
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f9f0ff;
-            margin: 0;
-            padding: 20px;
-            text-align: center;
-        }
-        
-        .carrossel-container {
-            max-width: 800px;
-            margin: 0 auto;
-            position: relative;
-            overflow: hidden;
-            border-radius: 15px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-        }
-        
-        .carrossel {
-            display: flex;
-            transition: transform 0.5s ease-in-out;
-            height: 500px;
-        }
-        
-        .carrossel img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            flex-shrink: 0;
-        }
-        
-        .carrossel-controle {
-            position: absolute;
-            top: 50%;
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            transform: translateY(-50%);
-        }
-        
-        .carrossel-btn {
-            background: rgba(255,255,255,0.5);
-            border: none;
-            padding: 15px;
-            cursor: pointer;
-            font-size: 24px;
-            color: #d23669;
-            z-index: 10;
-        }
-        
-        .indicadores {
-            display: flex;
-            justify-content: center;
-            margin-top: 20px;
-        }
-        
-        .indicador {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: #ccc;
-            margin: 0 5px;
-            cursor: pointer;
-        }
-        
-        .indicador.ativo {
-            background: #d23669;
-        }
-        
-        h1 {
-            color: #d23669;
-            margin-bottom: 30px;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>Meu mundo é você</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #e3f2fd; /* azul claro */
+      overflow-x: hidden;
+    }
+    .carousel-container {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+    }
+    .carousel {
+      width: 100vw;
+      height: 100vh;
+      position: relative;
+    }
+    .carousel img {
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+      position: absolute;
+      top: 0;
+      left: 0;
+      opacity: 0;
+      transition: opacity 0.5s;
+      display: block;
+    }
+    .carousel img.active {
+      opacity: 1;
+      z-index: 1;
+    }
+    #showBtn {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 2;
+      padding: 18px 40px;
+      font-size: 1.5em;
+      background: #2196f3; /* azul principal */
+      color: #fff;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      box-shadow: 0 2px 8px #2196f380;
+      transition: background 0.2s;
+    }
+    #showBtn:hover {
+      background: #1565c0; /* azul escuro */
+    }
+    .section {
+      margin-top: 50px;
+      margin-bottom: 50px;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 2px 12px #2196f380;
+      padding: 32px;
+      text-align: center;
+      font-size: 1.3em;
+      position: relative;
+      z-index: 2;
+    }
+    .section-final {
+      max-width: 700px;
+      margin: 0 auto;
+      background: rgba(255,255,255,0.2);
+      border-radius: 16px;
+      box-shadow: 0 2px 12px #2196f380;
+      padding: 32px;
+      text-align: center;
+      font-size: 1.3em;
+      position: relative;
+      z-index: 2;
+    }
+    .parallax-img {
+      min-height: 400px;
+      width: 100vw;
+      background-attachment: fixed;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+      margin: 0;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .parallax-img p, .parallax-img h2 {
+      color: #fff;
+      text-shadow: 0 2px 8px #0008;
+    }
+    .hearts {
+      pointer-events: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 9999;
+      overflow: hidden;
+    }
+    .heart {
+      position: absolute;
+      width: 32px;
+      height: 32px;
+      background: url('https://cdn-icons-png.flaticon.com/512/833/833472.png') no-repeat center/contain;
+      opacity: 0.8;
+      animation: fall 1.5s linear forwards;
+    }
+    @keyframes fall {
+      to {
+        transform: translateY(100vh) rotate(360deg) scale(1.2);
+        opacity: 0.2;
+      }
+    }
+    audio { display: none; }
+  </style>
 </head>
 <body>
-    <h1>Homenagem em Fotos</h1>
-    
-    <div class="carrossel-container">
-        <div class="carrossel">
-            <!-- Adicione suas imagens aqui -->
-            <img src="foto1.jpg" alt="Foto 1">
-            <img src="foto2.jpg" alt="Foto 2">
-            <img src="foto3.jpg" alt="Foto 3">
-            <img src="foto4.jpg" alt="Foto 4">
-        </div>
-        
-        <div class="carrossel-controle">
-            <button class="carrossel-btn prev">❮</button>
-            <button class="carrossel-btn next">❯</button>
-        </div>
+  <audio id="bgm" src="soundtrack_vempraminhavida.mp3" loop></audio>
+  <div class="carousel-container">
+    <div class="carousel" id="carousel">
+      <img src="1.png" class="active" alt="Foto 1">
+      <img src="2.png" alt="Foto 2">
+      <img src="3.png" alt="Foto 3">
+      <img src="4.png" alt="Foto 4">
+      <img src="5.png" alt="Foto 5">
+      <img src="6.png" alt="Foto 6">
+      <img src="8.png" alt="Foto 8">
+      <img src="9.png" alt="Foto 9">
+      <img src="10.png" alt="Foto 10">
+      <img src="11.png" alt="Foto 11">
+      <img src="12.png" alt="Foto 12">
+      <img src="13.png" alt="Foto 13">
+      <img src="14.png" alt="Foto 14">
+      <img src="15.png" alt="Foto 15">
+      <img src="16.png" alt="Foto 16">
+      <img src="16.png" alt="Foto 17">
     </div>
-    
-    <div class="indicadores"></div>
+    <button id="showBtn">Walleska</button>
+  </div>
+  <div id="content" style="display:none;">
+    <div class="parallax-img" style="background-image: url('1.png');"></div>
+    <div class="section">
+      <h2>Meu amor,</h2>
+      <p>
+        A cada dia que passa, o meu coração se enche de carinho e admiração por você. Cada sorriso seu ilumina o meu mundo, e cada abraço me faz sentir que estou exatamente onde deveria estar.
+      </p>
+    </div>
+    <div class="parallax-img" style="background-image: url('11.png');"></div>
+    <div class="section">
+      <p>
+        Te ter na minha vida é como encontrar paz no meio do caos. Seus olhos me acalma, seu toque me âncora o seu jeito transforma os dias comuns em momentos inesquecíveis.
+      </p>
+    </div>
+    <div class="parallax-img" style="background-image: url('8.png');"></div>
+    <div class="section">
+      <p>
+        Hoje eu só consigo querer mais de nós, mais do que somos, e mais dos seus abraços, mais desse amor que me faz tão bem.
+      </p>
+    </div>
+    <div class="parallax-img" style="background-image: url('3.png');"></div>
+    <div class="section">
+      <h2>
+        Eu te amo e com você tudo faz sentido
+      </h2>
+    </div>
+    <div class="parallax-img" style="background-image: url('casacomigo.jpg');padding-top:100px;padding-bottom:50px">
+      <div class="section-final">
+        <h2>Quer casar comigo?</h2>
+      </div>
+    </div>
+  </div>
+  <div class="hearts" id="hearts"></div>
+  <script>
+    // Carrossel simples
+    const imgs = document.querySelectorAll('#carousel img');
+    let idx = 0;
+    setInterval(() => {
+      imgs[idx].classList.remove('active');
+      idx = (idx + 1) % imgs.length;
+      imgs[idx].classList.add('active');
+    }, 2500);
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const carrossel = document.querySelector('.carrossel');
-            const imagens = document.querySelectorAll('.carrossel img');
-            const btnPrev = document.querySelector('.prev');
-            const btnNext = document.querySelector('.next');
-            const indicadoresContainer = document.querySelector('.indicadores');
-            
-            let indiceAtual = 0;
-            const totalImagens = imagens.length;
-            let intervaloCarrossel;
-            
-            // Criar indicadores
-            imagens.forEach((_, index) => {
-                const indicador = document.createElement('div');
-                indicador.classList.add('indicador');
-                if (index === 0) indicador.classList.add('ativo');
-                indicador.addEventListener('click', () => irParaImagem(index));
-                indicadoresContainer.appendChild(indicador);
-            });
-            
-            // Clonar primeira e última imagem para efeito infinito
-            const primeiraImg = imagens[0].cloneNode(true);
-            const ultimaImg = imagens[imagens.length - 1].cloneNode(true);
-            carrossel.insertBefore(ultimaImg, imagens[0]);
-            carrossel.appendChild(primeiraImg);
-            
-            // Ajustar posição inicial
-            carrossel.style.transform = `translateX(-${100}%)`;
-            
-            // Navegação
-            function irParaImagem(index) {
-                indiceAtual = index;
-                atualizarCarrossel();
-                resetarIntervalo();
-            }
-            
-            function proximaImagem() {
-                indiceAtual = (indiceAtual + 1) % totalImagens;
-                atualizarCarrossel();
-            }
-            
-            function imagemAnterior() {
-                indiceAtual = (indiceAtual - 1 + totalImagens) % totalImagens;
-                atualizarCarrossel();
-            }
-            
-            function atualizarCarrossel() {
-                carrossel.style.transition = 'transform 0.5s ease-in-out';
-                carrossel.style.transform = `translateX(-${(indiceAtual + 1) * 100}%)`;
-                
-                // Atualizar indicadores
-                document.querySelectorAll('.indicador').forEach((ind, index) => {
-                    ind.classList.toggle('ativo', index === indiceAtual);
-                });
-            }
-            
-            // Event listeners
-            btnNext.addEventListener('click', () => {
-                proximaImagem();
-                resetarIntervalo();
-            });
-            
-            btnPrev.addEventListener('click', () => {
-                imagemAnterior();
-                resetarIntervalo();
-            });
-            
-            // Transição infinita
-            carrossel.addEventListener('transitionend', () => {
-                if (imagens[indiceAtual].id === 'ultima-clone') {
-                    carrossel.style.transition = 'none';
-                    indiceAtual = totalImagens - 1;
-                    carrossel.style.transform = `translateX(-${(indiceAtual + 1) * 100}%)`;
-                }
-                
-                if (imagens[indiceAtual].id === 'primeira-clone') {
-                    carrossel.style.transition = 'none';
-                    indiceAtual = 0;
-                    carrossel.style.transform = `translateX(-${(indiceAtual + 1) * 100}%)`;
-                }
-            });
-            
-            // Auto-play
-            function iniciarCarrosselAutomatico() {
-                intervaloCarrossel = setInterval(proximaImagem, 3000);
-            }
-            
-            function resetarIntervalo() {
-                clearInterval(intervaloCarrossel);
-                iniciarCarrosselAutomatico();
-            }
-            
-            iniciarCarrosselAutomatico();
-            
-            // Pausar ao passar o mouse
-            carrosselContainer.addEventListener('mouseenter', () => {
-                clearInterval(intervaloCarrossel);
-            });
-            
-            carrosselContainer.addEventListener('mouseleave', () => {
-                iniciarCarrosselAutomatico();
-            });
-        });
-    </script>
+    // Botão de mostrar conteúdo e iniciar efeitos
+    const btn = document.getElementById('showBtn');
+    const content = document.getElementById('content');
+    const audio = document.getElementById('bgm');
+    btn.onclick = function() {
+      btn.style.display = 'none';
+      document.querySelector('.carousel-container').style.display = 'none';
+      content.style.display = 'block';
+      audio.volume = 0; // começa baixo]
+      audio.currentTime = 9;
+      audio.play();
+      fadeInAudio(audio, 1, 10000); // volume final 1, duração 5s
+      startHearts();
+      content.scrollIntoView({ behavior: 'smooth' });
+    };
+
+    // Corações caindo
+    function startHearts() {
+      const hearts = document.getElementById('hearts');
+      let running = true;
+      let interval = setInterval(() => {
+        if (!running) return;
+        const heart = document.createElement('div');
+        heart.className = 'heart';
+        heart.style.left = Math.random() * 98 + 'vw';
+        heart.style.animationDuration = (1 + Math.random()) + 's';
+        hearts.appendChild(heart);
+        setTimeout(() => heart.remove(), 2000);
+      }, 80);
+      setTimeout(() => {
+        running = false;
+        clearInterval(interval);
+      }, 60000); // 1 minuto
+    }
+    function fadeInAudio(audio, targetVolume, duration) {
+      const step = 0.05;
+      const interval = duration / (targetVolume / step);
+      let vol = 0;
+      const fade = setInterval(() => {
+        vol = Math.min(vol + step, targetVolume);
+        audio.volume = vol;
+        if (vol >= targetVolume) clearInterval(fade);
+      }, interval);
+    }
+  </script>
 </body>
 </html>
